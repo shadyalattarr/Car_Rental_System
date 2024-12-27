@@ -1,0 +1,22 @@
+[CAR]
+-plate_id-manufacturer-model-year-status-price
+^^^^^^^^^^                          
+
+[CUSTOMER]
+-CustomerID-name-email-phone_number-card?-
+^^^^
+
+[OFFICE]
+-office_id-office_name-office_location
+^^^^^^^^^^
+
+[RESERVATION]
+-customer_SSN-plate_id-office_id-date-reservation_type
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+[PAYMENTS]
+-bill_id-customer_SSN-plate_id-office_id-date-bill_size-
+^^^^^^^^ 
+
+this is what we'll work with for now ig -->> still have 
+no idea how to know CAR STATUS on a CERTAIN DAY
