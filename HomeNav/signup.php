@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,6 +9,12 @@
 </head>
 <body>
     <?php 
+    // did you submit or not
+    //$_POST["submit"] -> true if you came in here through submission
+    // if true 
+    // validate
+    //errors 
+    // redirect to original page ?
     $server_name="localhost";
     $username = "root";
     $password = "";
@@ -36,7 +44,7 @@
                 // will have customer id increment and  email unique?
                 // same : we cant have that
                 //$errors[] = $row["email"]." is ALREADY TAKEN";
-                echo "TAKEN";
+                echo "<div>error</div>"
                 $taken=true;
                 break;
             }

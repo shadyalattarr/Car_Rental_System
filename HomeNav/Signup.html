@@ -5,49 +5,60 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Signup Page</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        .error {
+            color: red;                /* Makes the error message clearly visible */
+            font-size: 0.9em;          /* Slightly smaller than the normal text size */
+            font-weight: bold;         /* Emphasizes the error text */
+            margin-left: 10px;         /* Adds spacing to separate the error message from input fields */
+            display: inline-block;     /* Ensures the message aligns well with inline content */
+            background-color: #ffe5e5; /* Light red background for extra visibility */
+            padding: 2px 5px;          /* Adds slight padding around the error text */
+            border-radius: 3px;        /* Rounds the corners for a softer look */
+        }
+
+        .error:hover {
+            text-decoration: underline; /* Adds an underline when hovered */
+            cursor: pointer;            /* Changes the cursor to a pointer */
+        }
+    </style>
+
     <script>
         function validateForm(){
-            var name = document.getElementById("name").value;
-            var email = document.getElementById("email").value;
-            var phone = document.getElementById("phone").value;
-            var card = document.getElementById("card").validateForm;
+            
+            
 
-
-            var pwd = document.getElementById("password").value;
-            var confirm_password = document.getElementById("confirm_pwd").value;
             var flag = true;
 
-            if (name === ""){
-                alert("Please enter your name!");
-                flag = false;
-            }
-            if (email === ""){
-                alert("Please enter your email!");
-                flag = false;
-            }
-            if (phone === ""){
-                alert("Please enter your phone number!");
-                flag = false;
-            }
-            if (card === ""){
-                alert("Please enter your card!");
-                flag = false;
-            } 
+            // if (name === ""){
+            //     nameError.textContent = "Name Should not be empty";
+            //     flag = false;
+            // }
+            // if (email === ""){
+            //     alert("Please enter your email!");
+            //     flag = false;
+            // }
+            // if (phone === ""){
+            //     alert("Please enter your phone number!");
+            //     flag = false;
+            // }
+            // if (card === ""){
+            //     alert("Please enter your card!");
+            //     flag = false;
+            // } 
             
             
 
-            if (pwd === ""){
-                alert("Please enter your password!");
-                flag = false;
-            }
-            if (confirm_password === ""){
-                alert("Please confirm your password!");
-                flag = false;
-            }
-            if (pwd !== confirm_password && flag){
-                alert("Passwords do not match!");
-                flag = false;
-            }
+            // if (pwd === ""){
+            //     alert("Please enter your password!");
+            //     flag = false;
+            // }
+            // if (confirm_password === ""){
+            //     alert("Please confirm your password!");
+            //     flag = false;
+            // }
+
             return flag;
         }
     </script>
@@ -79,18 +90,21 @@
     <div class="container mt-5">
         <h2 class="text-center">Signup</h2>
         <p class="text-center text-muted">Please fill in your details to continue</p>
-        <form class="mt-4" action="signup.php" method="post" onsubmit="return validateForm();"><!--margin top 4 which is predefined in bootstrap css, mb-3 is margin bottom 3-->
+        <form id = "custForm" class="mt-4" action="signup.php" method="post"><!--margin top 4 which is predefined in bootstrap css, mb-3 is margin bottom 3-->
             <div class="mb-3"> <!--Add onsubmit, new file for validation and storing data in db-->
                 <label for="name" class="form-label">Name</label>
-                <input type="text" class="form-control" id="name" name="name" placeholder="Enter your name" required>
+                <input type="text" class="form-control" id="name" name="name" placeholder="Enter your name">
+                <span id="nameError" class="error"></span>
             </div>
             <div class="mb-3">
                 <label for="email" class="form-label">Email</label>
-                <input type="email" class="form-control" id="email" name="email" placeholder="Enter your email" required>
+                <input type="email" class="form-control" id="email" name="email" placeholder="Enter your email">
+                <span id="emailError" class="error"></span>
             </div>
             <div class="mb-3">
                 <label for="phone" class="form-label">Phone Number</label>
-                <input type="tel" class="form-control" id="phone" name="phone" placeholder="Enter your phone number" required>
+                <input type="tel" class="form-control" id="phone" name="phone" placeholder="Enter your phone number">
+                <span id="phoneNumError" class="error"></span>
             </div>
             <div class="mb-3">
                 <label for="payment" class="form-label">Method of Payment</label>
@@ -106,16 +120,97 @@
             </div>
             <div class="mb-3">
                 <label for="password" class="form-label">Password</label>
-                <input type="password" class="form-control" id="password" name="password" placeholder="Enter your password" required>
+                <input type="password" class="form-control" id="password" name="password" placeholder="Enter your password">
+                <span id="passwordError" class="error"></span>
             </div>
             <div class="mb-3">
                 <label for="confirm_password" class="form-label">Confirm Your Password</label>
-                <input type="password" class="form-control" id="confirm_password" name="confirm_password" placeholder="Re-enter your password" required>
+                <input type="password" class="form-control" id="confirm_password" name="confirm_password" placeholder="Re-enter your password">
+                <span id="confirmPassError" class="error"></span>
             </div>
             <button type="submit" class="btn btn-primary w-100">Sign up</button>
         </form>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        const form = document.getElementById("custForm");
+
+        // Validate form on submit
+        form.addEventListener("submit", function(event) {
+            let isValid = true;
+            var name = document.getElementById("name"); 
+            var email = document.getElementById("email");
+            var phone = document.getElementById("phone");
+            //var card = document.getElementById("card").validateForm; // ---
+            var password = document.getElementById("password");
+            var confirm_password = document.getElementById("confirm_password");
+
+            var confirmPassError = document.getElementById("confirmPassError");
+            var passwordError = document.getElementById("passwordError");
+            var emailError = document.getElementById("emailError");
+            var nameError = document.getElementById("nameError");
+            var phoneNumberError = document.getElementById("phoneNumError");
+
+            // Validate username
+            if (name.value.trim() === "") {
+                nameError.textContent = "Please enter an name!";
+                isValid = false;
+            } else {
+                nameError.textContent = "";
+            }
+
+            // validate phonenumber
+            if (phone.value.trim() === "") {
+                phoneNumberError.textContent = "Please enter a phone number!";
+                isValid = false;
+            } else if (phone.value.trim().length < 10) {
+                phoneNumberError.textContent = "Do not think phone numbers are less than 10 digits boi!";
+                isValid = false;
+            }else {
+                phoneNumberError.textContent = "";
+            }
+            
+
+            // Validate email
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (email.value.trim() === ""){
+                emailError.textContent = "Please enter an email!";
+                isValid = false;
+            }else if (!emailRegex.test(email.value.trim())) {
+                emailError.textContent = "Please enter a valid email address.";
+                isValid = false;
+            } else {
+                emailError.textContent = "";
+            }
+
+            // Validate password
+            if (password.value.trim() === ""){
+                passwordError.textContent = "Please enter a password!";
+                isValid = false;
+            }else if (password.value.trim().length < 8) {
+                passwordError.textContent = "Password must be at least 8 characters long!";
+                isValid = false;
+            } else {
+                passwordError.textContent = "";
+                if (confirm_password.value.trim() === ""){
+                    confirmPassError.textContent = "Please confirm password!";
+                    isValid = false;
+                } else if(password.value.trim() !== confirm_password.value.trim()){
+                    confirmPassError.textContent = "Passwords are not matching!";
+                    isValid = false;
+                } else {
+                    confirmPassError.textContent = "";
+                }
+            }
+
+            // Prevent form submission if validation fails
+            if (!isValid) {
+                event.preventDefault();
+            }
+        });
+    </script>
+
 </body>
 </html>
