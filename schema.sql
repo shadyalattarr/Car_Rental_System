@@ -5,9 +5,11 @@ CREATE TABLE Car (
     Manufacturer varchar(255) NOT NULL,
     Model varchar(255) NOT NULL,
     ManufactureYear YEAR NOT NULL,
+    office_id INT UNSIGNED,
     `Status` ENUM('active', 'out of service', 'rented') NOT NULL DEFAULT 'active',
     Price DECIMAL(12,2),
-    PRIMARY KEY(PlateID)
+    PRIMARY KEY(PlateID),
+    FOREIGN KEY (office_id) REFERENCES office(office_id)
 );
 
 CREATE TABLE Customer (
@@ -35,15 +37,14 @@ INSERT INTO office (office_name, office_location) VALUES
 ('Support Center', 'Seattle'),
 ('Branch Office', 'Miami');
 
-
-
-
 CREATE TABLE action (
-	CustomerID INT UNSIGNED,
-    PlateID varchar(8) NOT NULL,
+    CustomerID INT UNSIGNED,
+    PlateID varchar(8),
     office_id INT UNSIGNED,
-    reservation_date DATE DEFAULT CURRENT_DATE,
-    action_type ENUM('reserve', 'pick up','payment', 'return') NOT NULL, -- ???
-    PRIMARY KEY(CustomerID,PlateID,office_id,) -- ?????
-    -- forign ks
-); 
+    reservation_date DATE DEFAULT (CURRENT_DATE),
+    action_type ENUM('reserve', 'pick up', 'payment', 'return') NOT NULL,
+    PRIMARY KEY(CustomerID, PlateID, reservation_date, action_type),
+    FOREIGN KEY (CustomerID) REFERENCES Customer(CustomerID),
+    FOREIGN KEY (PlateID) REFERENCES Car(PlateID),
+    FOREIGN KEY (office_id) REFERENCES office(office_id)
+);

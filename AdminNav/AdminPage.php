@@ -123,6 +123,10 @@ $adminName = $_SESSION['name'];
                             <label for="price" class="form-label">Price</label>
                             <input type="number" class="form-control" id="price" name="price" step="0.01" required>
                         </div>
+                        <div class="mb-3">
+                            <label for="officeId" class="form-label">Office ID</label>
+                            <input type="text" class="form-control" id="officeId" name="officeId" required>
+                        </div>
                         <button type="submit" class="btn btn-primary w-100">Add Car</button>
                     </form>
                 </div>
@@ -179,6 +183,10 @@ $adminName = $_SESSION['name'];
                             <div class="mb-3">
                                 <label for="price" class="form-label">Price</label>
                                 <input type="number" class="form-control" id="price" name="price">
+                            </div>
+                            <div class="mb-3">
+                                <label for="officeId" class="form-label">Office ID</label>
+                                <input type="text" class="form-control" id="officeId" name="officeId">
                             </div>
                         </div>
 

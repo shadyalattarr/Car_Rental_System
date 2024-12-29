@@ -23,7 +23,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $hashed_password = md5($password);
 
     // Query to check the user's role
-    $sql = "SELECT `Name` , `Role` FROM customer WHERE email = ? AND `password` = ?";
+    $sql = "SELECT `Name` , `Role`,`CustomerID` FROM customer WHERE email = ? AND `password` = ?";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("ss", $email, $hashed_password);
     $stmt->execute();
@@ -36,6 +36,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $name = $row['Name'];
 
         $_SESSION['name'] = $name;
+        $_SESSION['CustomerID'] = $row['CustomerID'];
 
         // Redirect based on role   
         if ($role == 'admin') {

@@ -20,9 +20,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $manufactureYear = $_POST['manufactureYear'];
     $status = $_POST['status'];
     $price = $_POST['price'];
+    $officeID = $_POST['officeId'];
 
 
-    $sql = "INSERT INTO car (PlateID, manufacturer, model, ManufactureYear, `status`, price) VALUES ('$plate_id', '$manufacturer', '$model', '$manufactureYear', '$status', '$price')";
+    $sql = "INSERT INTO car (PlateID, manufacturer, model, ManufactureYear, `status`, price, office_id) VALUES ('$plate_id', '$manufacturer', '$model', '$manufactureYear', '$status', '$price','$officeID')";
     try {
         if ($conn->query($sql) === TRUE) {
             ?>
