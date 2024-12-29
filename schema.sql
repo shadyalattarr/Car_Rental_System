@@ -17,5 +17,6 @@ CREATE TABLE Customer (
     phone_number varchar(255) NOT NULL,
     last_4_card_digits CHAR(4), -- Store only last 4 digits
     `password` varchar(255),
+    `Role` ENUM('user', 'admin') NOT NULL DEFAULT 'user',
     PRIMARY KEY(CustomerID)
 ); 
