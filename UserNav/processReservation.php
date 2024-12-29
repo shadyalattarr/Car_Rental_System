@@ -46,11 +46,11 @@ if (isset($_SESSION['selectedCar'])) {
     $stmt->execute();
 
     // Insert a new action record into the action table, including the office_id
-    $actionSql = "INSERT INTO action (CustomerID, PlateID, office_id, reservation_date, action_type) 
-                  VALUES (?, ?, ?, CURRENT_DATE, ?)";
+    $actionSql = "INSERT INTO action (CustomerID, PlateID, office_id, reservation_date) 
+                  VALUES (?, ?, ?, CURRENT_DATE)";
     $actionStmt = $conn->prepare($actionSql);
     $actionType = 'reserve';
-    $actionStmt->bind_param("isis", $customerId, $selectedCar['PlateID'], $officeId, $actionType);
+    $actionStmt->bind_param("isi", $customerId, $selectedCar['PlateID'], $officeId);
     
     if (!$actionStmt->execute()) {
         die("Error creating reservation: " . $conn->error);
