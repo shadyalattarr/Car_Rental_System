@@ -20,7 +20,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $password = $_POST['password'];
 
     // Hash the entered password using md5
-    $hashed_password = $password;
+    $hashed_password = mb5($password);
 
     // Query to check the user's role
     $sql = "SELECT `Name` , `Role` FROM customer WHERE email = ? AND `password` = ?";
