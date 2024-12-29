@@ -61,8 +61,9 @@
         } else {
             echo "i think we have problem";
         }
-    } else {
-        echo "EMAIL IS DUPLICATED IDK WHERE ETO PUT THIS MESSAGE i think i will make seesiion to send it but need all php";
+    } else {// Invalid credentials
+        echo "<script>alert('Email already in use! Please use another email!'); window.location.href='Signup.html';</script>";
+        // echo "EMAIL IS DUPLICATED IDK WHERE ETO PUT THIS MESSAGE i think i will make seesiion to send it but need all php";
     }
 
     $conn->close();

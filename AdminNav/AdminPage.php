@@ -51,10 +51,10 @@ $adminName = $_SESSION['name'];
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="Login.html">Login</a>
+                        <a class="nav-link" href="../HomeNav/Login.html">Login</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="Signup.html">Signup</a>
+                        <a class="nav-link" href="../HomeNav/Signup.html">Signup</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="AdminPage.php">Admin</a>
@@ -65,20 +65,20 @@ $adminName = $_SESSION['name'];
     </nav>
 
     <div class="container mt-5">
-        <h2 class="text-center">Hello, <?php echo $adminName; ?>!</h2>
+        <h2 class="text-center">Hello, Admin <?php echo $adminName; ?>!</h2>
         <p class="text-center text-muted">Welcome.</p>
 
-        <div class="row mt-12 justify-content-center">
+        <div class="row mt-3 justify-content-center">
             <div class="col-md-4 text-center mb-3">
                 <button class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#addCarModal">Add Car</button>
             </div>
         </div>
-        <div class="row mt-12 justify-content-center">
+        <div class="row mt-3 justify-content-center">
             <div class="col-md-4 text-center">
                 <button class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#searchModal">Search</button>
             </div>
         </div>
-        <div class="row mt-12 justify-content-center">
+        <div class="row mt-3 justify-content-center">
             <div class="col-md-4 text-center">
                 <button class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#updateCarModal">Update Car</button>
             </div>

@@ -20,3 +20,30 @@ CREATE TABLE Customer (
     `Role` ENUM('user', 'admin') NOT NULL DEFAULT 'user',
     PRIMARY KEY(CustomerID)
 ); 
+
+CREATE TABLE office (
+	office_id INT UNSIGNED AUTO_INCREMENT,
+    office_name varchar(255) NOT NULL,
+    office_location varchar(255) NOT NULL,
+    PRIMARY KEY(office_id)
+); 
+
+INSERT INTO office (office_name, office_location) VALUES
+('Headquarters', 'New York'),
+('Regional Office', 'Los Angeles'),
+('Sales Office', 'Chicago'),
+('Support Center', 'Seattle'),
+('Branch Office', 'Miami');
+
+
+
+
+CREATE TABLE action (
+	CustomerID INT UNSIGNED,
+    PlateID varchar(8) NOT NULL,
+    office_id INT UNSIGNED,
+    reservation_date DATE DEFAULT CURRENT_DATE,
+    action_type ENUM('reserve', 'pick up','payment', 'return') NOT NULL, -- ???
+    PRIMARY KEY(CustomerID,PlateID,office_id,) -- ?????
+    -- forign ks
+); 
