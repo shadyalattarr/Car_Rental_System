@@ -78,6 +78,11 @@ $adminName = $_SESSION['name'];
                 <button class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#searchModal">Search</button>
             </div>
         </div>
+        <div class="row mt-12 justify-content-center">
+            <div class="col-md-4 text-center">
+                <button class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#updateCarModal">Update Car</button>
+            </div>
+        </div>
     </div>
 
     <!-- Modal to Add Car -->
@@ -90,6 +95,10 @@ $adminName = $_SESSION['name'];
                 </div>
                 <div class="modal-body">
                     <form action="addCar.php" method="POST">
+                        <div class="mb-3">
+                            <label for="plateid" class="form-label">Plate ID</label>
+                            <input type="text" class="form-control" id="plateid" name="plateid" required>
+                        </div>
                         <div class="mb-3">
                             <label for="manufacturer" class="form-label">Manufacturer</label>
                             <input type="text" class="form-control" id="manufacturer" name="manufacturer" required>
@@ -144,6 +153,10 @@ $adminName = $_SESSION['name'];
                         <!-- Car Information Fields -->
                         <div id="carFields" style="display: none;">
                             <div class="mb-3">
+                                <label for="plateid" class="form-label">Plate ID</label>
+                                <input type="text" class="form-control" id="plateid" name="plateid">
+                            </div>
+                            <div class="mb-3">
                                 <label for="manufacturer" class="form-label">Manufacturer</label>
                                 <input type="text" class="form-control" id="manufacturer" name="manufacturer">
                             </div>
@@ -186,6 +199,34 @@ $adminName = $_SESSION['name'];
                         </div>
 
                         <button type="submit" class="btn btn-primary w-100">Search</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal to Add Car -->
+    <div class="modal fade" id="updateCarModal" tabindex="-1" aria-labelledby="updateModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="updateModalLabel">Update Car Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="updateCar.php" method="POST">
+                        <div class="mb-3">
+                            <label for="plateid" class="form-label">Plate ID</label>
+                            <input type="text" class="form-control" id="plateid" name="plateid" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="status" class="form-label">Status</label>
+                            <select class="form-select" id="status" name="status" required>
+                                <option value="active">Active</option>
+                                <option value="out of service">Out of Service</option>
+                                <option value="rented">Rented</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">Update Car</button>
                     </form>
                 </div>
             </div>

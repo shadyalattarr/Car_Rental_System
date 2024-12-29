@@ -18,7 +18,6 @@
     // redirect to original page ?
 
 
-
     // i will assume we come here with 100% validates info
     $server_name="localhost";
     $username = "root";

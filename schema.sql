@@ -1,7 +1,7 @@
 CREATE DATABASE CAR_RENTAL_SYSTEM;
 
 CREATE TABLE Car (
-    PlateID INT UNSIGNED AUTO_INCREMENT,
+    PlateID varchar(8) NOT NULL,
     Manufacturer varchar(255) NOT NULL,
     Model varchar(255) NOT NULL,
     ManufactureYear YEAR NOT NULL,
