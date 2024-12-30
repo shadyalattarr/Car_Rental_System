@@ -7,7 +7,7 @@ if (!isset($_SESSION['name'])) {
     exit();
 }
 
-$adminName = $_SESSION['name'];
+$userName = $_SESSION['name'];
 ?>
 
 
@@ -47,17 +47,14 @@ $adminName = $_SESSION['name'];
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container">
-            <a class="navbar-brand" href="Homepage.html">CarRental</a>
+            <a class="navbar-brand" href="../HomeNav/Homepage.html">CarRental</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="../HomeNav/Login.html">Login</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="../HomeNav/Signup.html">Signup</a>
+                        <a class="nav-link" href="../HomeNav/logout.php">Logout</a>
                     </li>
                 </ul>
             </div>
@@ -65,7 +62,7 @@ $adminName = $_SESSION['name'];
     </nav>
 
     <div class="container mt-5">
-        <h2 class="text-center">Hello, Customer <?php echo $adminName; ?>!</h2>
+        <h2 class="text-center">Hello, <?php echo $userName; ?>!</h2>
         <p class="text-center text-muted">Welcome.</p>
 
         <div class="row mt-3 justify-content-center">

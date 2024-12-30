@@ -13,8 +13,10 @@ if ($conn->connect_error) {
 
 $customerId = $_SESSION['CustomerID'];
 
-// Get rented cars for current user
-$query = "SELECT c.PlateID, c.Manufacturer, c.Model, a.reservation_date, a.end_date 
+// Modified query to include both can_cancel and can_return flags
+$query = "SELECT c.PlateID, c.Manufacturer, c.Model, a.reservation_date, a.end_date,
+          CURRENT_DATE < a.reservation_date as can_cancel,
+          CURRENT_DATE >= a.reservation_date as can_return
           FROM car c 
           JOIN action a ON c.PlateID = a.PlateID 
           WHERE a.CustomerID = ? AND c.Status = 'rented' AND a.end_date > CURRENT_DATE";
@@ -51,7 +53,7 @@ $result = $stmt->get_result();
         
         <?php if (isset($_GET['error'])): ?>
             <div class="alert alert-danger" role="alert">
-                Error returning car: <?php echo htmlspecialchars($_GET['message'] ?? 'Unknown error'); ?>
+                <?php echo htmlspecialchars($_GET['message'] ?? 'Error returning car'); ?>
             </div>
         <?php endif; ?>
         
@@ -77,10 +79,18 @@ $result = $stmt->get_result();
                                 <td><?php echo htmlspecialchars($row['reservation_date']); ?></td>
                                 <td><?php echo htmlspecialchars($row['end_date']); ?></td>
                                 <td>
+                                    <?php if ($row['can_return']): ?>
                                     <form action="processReturn.php" method="POST" style="display: inline;">
                                         <input type="hidden" name="plateId" value="<?php echo htmlspecialchars($row['PlateID']); ?>">
                                         <button type="submit" class="btn btn-success btn-sm">Return Now</button>
                                     </form>
+                                    <?php endif; ?>
+                                    <?php if ($row['can_cancel']): ?>
+                                    <form action="processCancel.php" method="POST" style="display: inline;">
+                                        <input type="hidden" name="plateId" value="<?php echo htmlspecialchars($row['PlateID']); ?>">
+                                        <button type="submit" class="btn btn-danger btn-sm ms-2">Cancel Reservation</button>
+                                    </form>
+                                    <?php endif; ?>
                                 </td>
                             </tr>
                         <?php endwhile; ?>

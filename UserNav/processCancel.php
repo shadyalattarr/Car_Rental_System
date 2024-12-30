@@ -14,40 +14,33 @@ if ($conn->connect_error) {
 $plateId = $_POST['plateId'];
 $customerId = $_SESSION['CustomerID'];
 
-// Check if return date is valid
-$checkDateQuery = "SELECT reservation_date FROM action 
-                  WHERE PlateID = ? AND CustomerID = ? 
-                  AND end_date > CURRENT_DATE";
-                  
-$checkStmt = $conn->prepare($checkDateQuery);
+// Verify that the reservation can be cancelled (current_date < reservation_date)
+$checkQuery = "SELECT 1 FROM action 
+              WHERE PlateID = ? AND CustomerID = ? 
+              AND CURRENT_DATE < reservation_date
+              AND end_date > CURRENT_DATE";
+
+$checkStmt = $conn->prepare($checkQuery);
 $checkStmt->bind_param("si", $plateId, $customerId);
 $checkStmt->execute();
 $result = $checkStmt->get_result();
 
-if ($row = $result->fetch_assoc()) {
-    $reservationDate = $row['reservation_date'];
-    $currentDate = date('Y-m-d');
-    
-    if ($currentDate < $reservationDate) {
-        header("Location: returnCar.php?error=1&message=Cannot return car before reservation date (" . $reservationDate . ")");
-        exit();
-    }
+if ($result->num_rows === 0) {
+    header("Location: returnCar.php?error=1&message=Cannot cancel this reservation");
+    exit();
 }
-
-$today = date('Y-m-d');
 
 // Begin transaction
 $conn->begin_transaction();
 
 try {
-    // Update the action table end_date to today
-    $updateAction = "UPDATE action 
-                    SET end_date = ? 
+    // Delete the reservation from action table
+    $deleteAction = "DELETE FROM action 
                     WHERE CustomerID = ? 
                     AND PlateID = ? 
-                    AND end_date > CURRENT_DATE";
-    $stmt1 = $conn->prepare($updateAction);
-    $stmt1->bind_param("sis", $today, $customerId, $plateId);
+                    AND CURRENT_DATE < reservation_date";
+    $stmt1 = $conn->prepare($deleteAction);
+    $stmt1->bind_param("is", $customerId, $plateId);
     $stmt1->execute();
 
     // Update car status to active
@@ -58,11 +51,11 @@ try {
 
     // Commit transaction
     $conn->commit();
-    header("Location: returnCar.php?success=1");
+    header("Location: returnCar.php?success=1&message=Reservation cancelled successfully");
 } catch (Exception $e) {
     // Rollback transaction on error
     $conn->rollback();
-    header("Location: returnCar.php?error=1");
+    header("Location: returnCar.php?error=1&message=Error cancelling reservation");
 }
 
 $conn->close();
