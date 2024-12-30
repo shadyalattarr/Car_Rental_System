@@ -22,12 +22,13 @@ $customerId = $_SESSION['CustomerID'];
 $plateId = $selectedCar['PlateID'];
 $officeId = $selectedCar['office_id'];
 $endDate = $_POST['endDate'];
+$reservationDate = $_POST['reservationDate'];
 
 // Insert reservation into action table
-$sql = "INSERT INTO action (CustomerID, PlateID, office_id, end_date) 
-        VALUES (?, ?, ?, ?)";
+$sql = "INSERT INTO action (CustomerID, PlateID, office_id, reservation_date ,end_date) 
+        VALUES (?, ?, ?, ?, ?)";
 $stmt = $conn->prepare($sql);
-$stmt->bind_param("isss", $customerId, $plateId, $officeId, $endDate);
+$stmt->bind_param("issss", $customerId, $plateId, $officeId,$reservationDate, $endDate);
 
 // Update car status to rented
 $updateSql = "UPDATE car SET Status = 'rented' WHERE PlateID = ?";
@@ -37,6 +38,7 @@ $updateStmt->bind_param("s", $plateId);
 if ($stmt->execute() && $updateStmt->execute()) {
     unset($_SESSION['selectedCar']);
     unset($_SESSION['endDate']);
+    unset($_SESSION['reservationDate']);
     header("Location: userPage.php?success=1");
 } else {
     header("Location: reserveCarDetails.php?error=1");

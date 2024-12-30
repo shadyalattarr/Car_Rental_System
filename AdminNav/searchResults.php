@@ -29,7 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
         
         $query = "SELECT 
                     car.PlateID, car.Manufacturer, car.Model, car.ManufactureYear, car.Status, car.Price,office.office_location,
-                    customer.CustomerID, customer.Name, customer.email, customer.phone_number
+                    customer.CustomerID, customer.Name, customer.email, customer.phone_number, action.reservation_date,action.end_date
                   FROM car 
                   LEFT JOIN action ON car.PlateID = action.PlateID
                   LEFT JOIN customer ON action.CustomerID = customer.CustomerID
@@ -75,7 +75,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
     } elseif ($searchBy === 'customer'){
         $cust_id = $_POST['customerId'];
         $query = "SELECT c.CustomerID, c.Name, c.email, c.phone_number, 
-                         car.PlateID, car.Manufacturer, car.Model 
+                         car.PlateID, car.Manufacturer, car.Model, a.reservation_date,a.end_date
                   FROM customer c
                   LEFT JOIN action a ON c.CustomerID = a.CustomerID
                   LEFT JOIN car ON a.PlateID = car.PlateID
@@ -92,9 +92,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
         }
     } elseif ($searchBy === 'reservation'){
         $res_date = $_POST['reservationDate'];
-        $query = "SELECT * FROM reservation WHERE ";
+        $query = "SELECT c.CustomerID, c.Name, c.email, c.phone_number, 
+                         car.PlateID, car.Manufacturer, car.Model,a.reservation_date,a.end_date
+                  FROM customer c
+                  LEFT JOIN action a ON c.CustomerID = a.CustomerID
+                  LEFT JOIN car ON a.PlateID = car.PlateID
+                  WHERE 1=1";
         if ($res_date) {
-            $query .= " AND reservation_id = '$res_date'";
+            $query .= " AND a.reservation_date = '$res_date'";
         }
         $result = $conn->query($query);
         $results = array();
