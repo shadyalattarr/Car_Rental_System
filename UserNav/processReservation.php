@@ -1,73 +1,48 @@
 <?php
 session_start();
 
-// Check if the user is logged in
-if (!isset($_SESSION['name'])) {
-    header("Location: Login.html");
+if (!isset($_SESSION['name']) || !isset($_SESSION['selectedCar']) || !isset($_POST['endDate'])) {
+    header("Location: userPage.php");
     exit();
 }
 
-// Check if car details exist in the session
-if (isset($_SESSION['selectedCar'])) {
-    $selectedCar = $_SESSION['selectedCar'];
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "car_rental_system";
 
-    // Database connection
-    $servername = "localhost";
-    $username = "root"; // Modify with your DB username
-    $password = ""; // Modify with your DB password
-    $dbname = "CAR_RENTAL_SYSTEM";
+$conn = new mysqli($servername, $username, $password, $dbname);
 
-    $conn = new mysqli($servername, $username, $password, $dbname);
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
 
-    if ($conn->connect_error) {
-        die("Connection failed: " . $conn->connect_error);
-    }
+$selectedCar = $_SESSION['selectedCar'];
+$customerId = $_SESSION['CustomerID'];
+$plateId = $selectedCar['PlateID'];
+$officeId = $selectedCar['office_id'];
+$endDate = $_POST['endDate'];
 
-    // Get the customer ID from session (assuming it exists)
-    $customerId = $_SESSION['CustomerID']; // You should have this set during the login process
+// Insert reservation into action table
+$sql = "INSERT INTO action (CustomerID, PlateID, office_id, end_date) 
+        VALUES (?, ?, ?, ?)";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("isss", $customerId, $plateId, $officeId, $endDate);
 
-    // Fetch the office ID for the selected car from the Car table (assuming `office_id` is a column in the `Car` table)
-    $carSql = "SELECT office_id FROM Car WHERE PlateID = ?";
-    $carStmt = $conn->prepare($carSql);
-    $carStmt->bind_param("s", $selectedCar['PlateID']);
-    $carStmt->execute();
-    $carStmt->bind_result($officeId);
-    $carStmt->fetch();
-    $carStmt->close();
+// Update car status to rented
+$updateSql = "UPDATE car SET Status = 'rented' WHERE PlateID = ?";
+$updateStmt = $conn->prepare($updateSql);
+$updateStmt->bind_param("s", $plateId);
 
-    if (!$officeId) {
-        die("Car's office ID could not be found.");
-    }
-
-    // Update the car's status to 'rented'
-    $sql = "UPDATE Car SET Status = 'rented' WHERE PlateID = ?";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("s", $selectedCar['PlateID']);
-    $stmt->execute();
-
-    // Insert a new action record into the action table, including the office_id
-    $actionSql = "INSERT INTO action (CustomerID, PlateID, office_id, reservation_date) 
-                  VALUES (?, ?, ?, CURRENT_DATE)";
-    $actionStmt = $conn->prepare($actionSql);
-    $actionType = 'reserve';
-    $actionStmt->bind_param("isi", $customerId, $selectedCar['PlateID'], $officeId);
-    
-    if (!$actionStmt->execute()) {
-        die("Error creating reservation: " . $conn->error);
-    }
-
-    // Simulate a successful reservation (this is where the car status is updated)
-    // You can clear session data after successful reservation
-    unset($_SESSION['selectedCar']); // Clear session data after reservation
-
-    // Close database connection
-    $conn->close();
-
+if ($stmt->execute() && $updateStmt->execute()) {
+    unset($_SESSION['selectedCar']);
+    unset($_SESSION['endDate']);
+    header("Location: userPage.php?success=1");
 } else {
-    // Redirect back if no car is selected
-    header("Location: displayCars.php");
-    exit();
+    header("Location: reserveCarDetails.php?error=1");
 }
+
+$conn->close();
 ?>
 
 <!DOCTYPE html>

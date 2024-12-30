@@ -11,11 +11,11 @@
 ^^^^^^^^^^
 
 [RESERVATION]
--customer_SSN-plate_id-office_id-date-reservation_type
+-reservationID-customer_SSN-plate_id-office_id-date-reservation_type
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 [PAYMENTS]
--bill_id-customer_SSN-plate_id-office_id-date-bill_size-
+-bill_id-reservationID-bill_size-
 ^^^^^^^^ 
 
 this is what we'll work with for now ig -->> still have 

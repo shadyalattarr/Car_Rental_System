@@ -56,9 +56,6 @@ $adminName = $_SESSION['name'];
                     <li class="nav-item">
                         <a class="nav-link" href="../HomeNav/Signup.html">Signup</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="AdminPage.php">Admin</a>
-                    </li>
                 </ul>
             </div>
         </div>
@@ -81,6 +78,26 @@ $adminName = $_SESSION['name'];
         <div class="row mt-3 justify-content-center">
             <div class="col-md-4 text-center">
                 <button class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#updateCarModal">Update Car</button>
+            </div>
+        </div>
+        <div class="row mt-3 justify-content-center">
+            <div class="col-md-4 text-center">
+                <button class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#dateSearchModal">Search by Date</button>
+            </div>
+        </div>
+        <div class="row mt-3 justify-content-center">
+            <div class="col-md-4 text-center">
+                <button class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#periodSearchModal">Search by Period for Car</button>
+            </div>
+        </div>
+        <div class="row mt-3 justify-content-center">
+            <div class="col-md-4 text-center">
+                <button class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#customerPeriodModal">Search Customer Reservations</button>
+            </div>
+        </div>
+        <div class="row mt-3 justify-content-center">
+            <div class="col-md-4 text-center">
+                <button class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#revenueSearchModal">View Revenue</button>
             </div>
         </div>
     </div>
@@ -175,6 +192,7 @@ $adminName = $_SESSION['name'];
                             <div class="mb-3">
                                 <label for="status" class="form-label">Status</label>
                                 <select class="form-select" id="status" name="status">
+                                    <option value="">-- Any Statuses --</option>
                                     <option value="active">Active</option>
                                     <option value="out of service">Out of Service</option>
                                     <option value="rented">Rented</option>
@@ -212,7 +230,7 @@ $adminName = $_SESSION['name'];
             </div>
         </div>
     </div>
-    <!-- Modal to Add Car -->
+    <!-- Modal to update Car -->
     <div class="modal fade" id="updateCarModal" tabindex="-1" aria-labelledby="updateModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -231,10 +249,113 @@ $adminName = $_SESSION['name'];
                             <select class="form-select" id="status" name="status" required>
                                 <option value="active">Active</option>
                                 <option value="out of service">Out of Service</option>
-                                <option value="rented">Rented</option>
                             </select>
                         </div>
                         <button type="submit" class="btn btn-primary w-100">Update Car</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add this new modal for date search -->
+    <div class="modal fade" id="dateSearchModal" tabindex="-1" aria-labelledby="dateSearchModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="dateSearchModalLabel">Search Cars by Date</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="searchByDate.php" method="POST">
+                        <div class="mb-3">
+                            <label for="searchDate" class="form-label">Select Date</label>
+                            <input type="date" class="form-control" id="searchDate" name="searchDate" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">Search</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add this new modal for period search -->
+    <div class="modal fade" id="periodSearchModal" tabindex="-1" aria-labelledby="periodSearchModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="periodSearchModalLabel">Search Reservations by Period</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="searchByPeriod.php" method="POST">
+                        <div class="mb-3">
+                            <label for="startDate" class="form-label">Start Date</label>
+                            <input type="date" class="form-control" id="startDate" name="startDate" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="endDate" class="form-label">End Date</label>
+                            <input type="date" class="form-control" id="endDate" name="endDate" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="carId" class="form-label">Car ID (Optional)</label>
+                            <input type="text" class="form-control" id="carId" name="carId">
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">Search</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add new modal for customer period search -->
+    <div class="modal fade" id="customerPeriodModal" tabindex="-1" aria-labelledby="customerPeriodModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="customerPeriodModalLabel">Search Customer Reservations</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="searchCustomerReservations.php" method="POST">
+                        <div class="mb-3">
+                            <label for="customerId" class="form-label">Customer ID</label>
+                            <input type="text" class="form-control" id="customerId" name="customerId" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="startDate" class="form-label">Start Date</label>
+                            <input type="date" class="form-control" id="startDate" name="startDate" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="endDate" class="form-label">End Date</label>
+                            <input type="date" class="form-control" id="endDate" name="endDate" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">Search</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add new modal for revenue search -->
+    <div class="modal fade" id="revenueSearchModal" tabindex="-1" aria-labelledby="revenueSearchModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="revenueSearchModalLabel">Search Revenue by Period</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="searchRevenue.php" method="POST">
+                        <div class="mb-3">
+                            <label for="startDate" class="form-label">Start Date</label>
+                            <input type="date" class="form-control" id="startDate" name="startDate" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="endDate" class="form-label">End Date</label>
+                            <input type="date" class="form-control" id="endDate" name="endDate" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">View Revenue</button>
                     </form>
                 </div>
             </div>

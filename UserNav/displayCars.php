@@ -58,8 +58,42 @@ unset($_SESSION['filteredCars']); // Clear session data after use
                                     <?php if ($car['Status'] === 'active'): ?>
                                         <form action="reserveCarDetails.php" method="POST" style="display: inline;">
                                             <input type="hidden" name="selectedCar" value="<?php echo htmlspecialchars(json_encode($car)); ?>">
-                                            <button type="submit" class="btn btn-link text-success fw-bold p-0 m-0">Active</button>
+                                            <div class="mb-3">
+                                                <label for="reservationDate" class="form-label">Start Date</label>
+                                                <input type="date" class="form-control" id="reservationDate" name="reservationDate" 
+                                                       min="<?php echo date('Y-m-d'); ?>" required>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="endDate" class="form-label">End Date</label>
+                                                <input type="date" class="form-control" id="endDate" name="endDate" required>
+                                            </div>
+                                            <button type="submit" class="btn btn-primary" onclick="return validateDates()">Reserve</button>
                                         </form>
+                                        <script>
+                                            function validateDates() {
+                                                var startDate = document.getElementById('reservationDate').value;
+                                                var endDate = document.getElementById('endDate').value;
+                                                var today = new Date().toISOString().split('T')[0];
+                                                
+                                                if (startDate < today) {
+                                                    alert('Start date cannot be in the past');
+                                                    return false;
+                                                }
+                                                
+                                                if (endDate <= startDate) {
+                                                    alert('End date must be after start date');
+                                                    return false;
+                                                }
+                                                
+                                                return true;
+                                            }
+
+                                            // Set min date for end date based on selected start date
+                                            document.getElementById('reservationDate').addEventListener('change', function() {
+                                                var startDate = this.value;
+                                                document.getElementById('endDate').min = startDate;
+                                            });
+                                        </script>
                                     <?php elseif ($car['Status'] === 'rented'): ?>
                                         <span class="text-warning fw-bold">Rented</span>
                                     <?php elseif ($car['Status'] === 'out of service'): ?>

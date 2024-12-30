@@ -7,14 +7,19 @@ if (!isset($_SESSION['name'])) {
     exit();
 }
 
-// Check if car details are set
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['selectedCar'])) {
+// Check if car details and dates are set
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['selectedCar']) && isset($_POST['endDate']) && isset($_POST['reservationDate'])) {
     $selectedCar = json_decode($_POST['selectedCar'], true);
-    $_SESSION['selectedCar'] = $selectedCar; // Store in session for persistence
-} elseif (isset($_SESSION['selectedCar'])) {
+    $endDate = $_POST['endDate'];
+    $reservationDate = $_POST['reservationDate'];
+    $_SESSION['selectedCar'] = $selectedCar;
+    $_SESSION['endDate'] = $endDate;
+    $_SESSION['reservationDate'] = $reservationDate;
+} elseif (isset($_SESSION['selectedCar']) && isset($_SESSION['endDate']) && isset($_SESSION['reservationDate'])) {
     $selectedCar = $_SESSION['selectedCar'];
+    $endDate = $_SESSION['endDate'];
+    $reservationDate = $_SESSION['reservationDate'];
 } else {
-    // Redirect back if no car is selected
     header("Location: displayCars.php");
     exit();
 }
@@ -30,21 +35,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['selectedCar'])) {
 </head>
 <body>
     <div class="container mt-5">
-        <h2 class="text-center">Reserve Car</h2>
+        <h2 class="text-center">Confirm Reservation</h2>
         <div class="card mt-4">
             <div class="card-body">
-                <h5 class="card-title">Car Details</h5>
+                <h5 class="card-title">Reservation Details</h5>
                 <p><strong>PlateID:</strong> <?php echo htmlspecialchars($selectedCar['PlateID']); ?></p>
                 <p><strong>Manufacturer:</strong> <?php echo htmlspecialchars($selectedCar['Manufacturer']); ?></p>
                 <p><strong>Model:</strong> <?php echo htmlspecialchars($selectedCar['Model']); ?></p>
                 <p><strong>Year:</strong> <?php echo htmlspecialchars($selectedCar['ManufactureYear']); ?></p>
                 <p><strong>Price:</strong> $<?php echo htmlspecialchars($selectedCar['Price']); ?></p>
+                <p><strong>Start Date:</strong> <?php echo htmlspecialchars($reservationDate); ?></p>
+                <p><strong>End Date:</strong> <?php echo htmlspecialchars($endDate); ?></p>
                 <form action="processReservation.php" method="POST">
-                    <div class="mb-3">
-                        <label for="cardDetails" class="form-label">Enter Card Details</label>
-                        <input type="text" class="form-control" id="cardDetails" name="cardDetails" required>
-                    </div>
-                    <button type="submit" class="btn btn-primary w-100">Complete Reservation</button>
+                    <input type="hidden" name="endDate" value="<?php echo htmlspecialchars($endDate); ?>">
+                    <input type="hidden" name="reservationDate" value="<?php echo htmlspecialchars($reservationDate); ?>">
+                    <button type="submit" class="btn btn-primary w-100">Confirm Reservation</button>
                 </form>
             </div>
         </div>

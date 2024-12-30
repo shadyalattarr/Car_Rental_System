@@ -59,9 +59,6 @@ $adminName = $_SESSION['name'];
                     <li class="nav-item">
                         <a class="nav-link" href="../HomeNav/Signup.html">Signup</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="AdminPage.php">Admin</a>
-                    </li>
                 </ul>
             </div>
         </div>
@@ -74,6 +71,11 @@ $adminName = $_SESSION['name'];
         <div class="row mt-3 justify-content-center">
             <div class="col-md-4 text-center mb-3">
                 <button class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#reserveCar">Reserve Car</button>
+            </div>
+        </div>
+        <div class="row mt-3 justify-content-center">
+            <div class="col-md-4 text-center mb-3">
+                <a href="returnCar.php" class="btn btn-primary w-100">Return Car</a>
             </div>
         </div>
         

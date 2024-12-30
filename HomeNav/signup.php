@@ -53,7 +53,7 @@
 
     if (!$taken) {
             
-        $sql = "INSERT INTO ".$table_name." (Name,email,phone_number,last_4_card_digits,password) VALUES ('".$_POST["name"]."','".$_POST["email"]."','".$_POST["phone"]."','".$_POST["card_num"]."','".md5($_POST["password"])."')";
+        $sql = "INSERT INTO ".$table_name." (Name,email,phone_number,password) VALUES ('".$_POST["name"]."','".$_POST["email"]."','".$_POST["phone"]."','".md5($_POST["password"])."')";
         
         if ($conn->query($sql) === TRUE) { // can check if TRUE with certain queries including INSET, DELETE , UPDATE
             header("Location: Homepage.html"); // will want to redirect to either a user page or admin page

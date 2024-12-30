@@ -17,7 +17,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $plate_id = $_POST['plateid'];
     $status = $_POST['status'];
 
-    $check_sql = "SELECT * FROM car WHERE PlateID = '$plate_id'";
+    // First check if car exists
+    $check_sql = "SELECT Status FROM car WHERE PlateID = '$plate_id'";
     $result = $conn->query($check_sql);
 
     if ($result->num_rows == 0) {
@@ -40,8 +41,31 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         exit();
     }
 
+    // Check if car is rented
+    $car_status = $result->fetch_assoc()['Status'];
+    if ($car_status === 'rented') {
+        ?>
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>Error</title>
+        </head>
+        <body>
+            <div style='text-align: center; padding: 20px; background: #f44336; color: white;'>Cannot update status: Car is currently rented!</div>
+            <script>
+                setTimeout(function() {
+                    window.location.href = 'AdminPage.php';
+                }, 3000);
+            </script>
+        </body>
+        </html>
+        <?php
+        exit();
+    }
+
+    // If not rented, proceed with update
     $sql = "UPDATE car SET `status` = '$status' WHERE PlateID = '$plate_id'";
-        try {
+    try {
         if ($conn->query($sql) === TRUE) {
             ?>
             <!DOCTYPE html>
